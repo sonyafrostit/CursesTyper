@@ -51,13 +51,17 @@ int main(int argc, char** argv) {
 	getmaxyx(wnd, terminal_row, terminal_column);
 	refresh();
 	tmp = getc(inputfile);
+	int to_draw = 1;
 	while(tmp != EOF) {
-		if (getch() == 'q') break;
-		int i = 0;
-
-		draw(tmp);
-		tmp = getc(inputfile);
-			
+		char user_char = getch();
+		if (user_char == 'q') break;
+		if (user_char == '\t') to_draw += 4;
+		while (to_draw > 0) {
+			draw(tmp);
+			tmp = getc(inputfile);
+			to_draw--;
+		}
+		to_draw++;
 	}
 	if (has_colors()) {
 		attroff(COLOR_PAIR(1));
